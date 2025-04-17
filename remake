@@ -904,11 +904,30 @@ refactor_bootfs() {
     # Edit the armbianEnv.txt
     armbianenv_conf_file="armbianEnv.txt"
     [[ -f "${armbianenv_conf_file}" ]] && {
-        sed -i "s|\(fdtfile=.*\/\)[^/]*$|\1${FDTFILE}|g" ${armbianenv_conf_file}
+        #sed -i "s|\(fdtfile=.*\/\)[^/]*$|\1${FDTFILE}|g" ${armbianenv_conf_file}
+        #sed -i "s|^rootdev=.*|rootdev=${armbianenv_rootdev}|g" ${armbianenv_conf_file}
+        #sed -i "s|^rootfstype=.*|rootfstype=btrfs|g" ${armbianenv_conf_file}
+        #sed -i "s|^rootflags=.*|rootflags=${armbianenv_rootflags}|g" ${armbianenv_conf_file}
+        #sed -i "s|^overlay_prefix=.*|overlay_prefix=${FAMILY}|g" ${armbianenv_conf_file}
+
+        cat > armbianEnv.txt <<EOF
+        verbosity=7
+        overlay_prefix=rockchip
+        rootdev=UUID=${ROOTFS_UUID}
+        rootfstype=btrfs
+        rootflags=compress=zstd:${ZSTD_LEVEL}
+        extraargs=usbcore.autosuspend=-1
+        extraboardargs=
+        fdtfile=/dtb/rockchip/rk3328-l1pro-1296mhz.dtb
+        kernel_addr_r=0x02000000
+        ramdisk_addr_r=0x06000000
+        EOF
         sed -i "s|^rootdev=.*|rootdev=${armbianenv_rootdev}|g" ${armbianenv_conf_file}
-        sed -i "s|^rootfstype=.*|rootfstype=btrfs|g" ${armbianenv_conf_file}
-        sed -i "s|^rootflags=.*|rootflags=${armbianenv_rootflags}|g" ${armbianenv_conf_file}
-        sed -i "s|^overlay_prefix=.*|overlay_prefix=${FAMILY}|g" ${armbianenv_conf_file}
+        echo "armbianEnv.txt -->"
+        echo "==============================================================================="
+        cat armbianEnv.txt
+        echo "==============================================================================="
+        echo
     }
 
     # Check device configuration files
