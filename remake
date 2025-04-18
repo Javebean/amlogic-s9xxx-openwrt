@@ -880,6 +880,7 @@ refactor_bootfs() {
     armbianenv_rootdev="UUID=${ROOTFS_UUID}"
     armbianenv_rootflags="compress=zstd:6"
 
+
     # Edit the uEnv.txt
     uenv_conf_file="uEnv.txt"
     [[ -f "${uenv_conf_file}" ]] && {
@@ -887,7 +888,16 @@ refactor_bootfs() {
         sed -i "s|meson.*.dtb|${FDTFILE}|g" ${uenv_conf_file}
         sed -i "s|sun.*.dtb|${FDTFILE}|g" ${uenv_conf_file}
         sed -i "s|rk.*.dtb|${FDTFILE}|g" ${uenv_conf_file}
+
+        # Append two new lines to the file
+        echo "kernel_addr_r=0x02000000" >> ${uenv_conf_file}
+        echo "ramdisk_addr_r=0x06000000" >> ${uenv_conf_file}
     }
+    if [[ -f "${uenv_conf_file}" ]]; then
+        cat uEnv.txt
+    else
+        echo "uEnv.txt11 does not exist."
+    fi
 
     # Add an alternate file (/boot/extlinux/extlinux.conf)
     boot_extlinux_file="extlinux/extlinux.conf.bak"
@@ -897,9 +907,20 @@ refactor_bootfs() {
         sed -i "s|meson.*.dtb|${FDTFILE}|g" ${boot_extlinux_file}
         sed -i "s|sun.*.dtb|${FDTFILE}|g" ${boot_extlinux_file}
         sed -i "s|rk.*.dtb|${FDTFILE}|g" ${boot_extlinux_file}
+        
+        # Append two new lines to the file
+        echo "kernel_addr_r=0x02000000" >> ${boot_extlinux_file}
+        echo "ramdisk_addr_r=0x06000000" >> ${boot_extlinux_file}
+
         # If needed, such as t95z(s905x), rename delete .bak
         [[ "${BOOT_CONF}" == "extlinux.conf" ]] && mv -f ${boot_extlinux_file} ${rename_extlinux_file}
     }
+
+    if [[ -f "${boot_extlinux_file}" ]]; then
+        cat ${boot_extlinux_file}
+    else
+        echo "boot_extlinux_file11 does not exist."
+    fi
 
     # Edit the armbianEnv.txt
     armbianenv_conf_file="armbianEnv.txt"
@@ -929,6 +950,12 @@ refactor_bootfs() {
         echo "==============================================================================="
         echo
     }
+
+    if [[ -f "${armbianenv_conf_file}" ]]; then
+        cat ${armbianenv_conf_file}
+    else
+        echo "armbianenv_conf_file11 does not exist."
+    fi
 
     # Check device configuration files
     [[ -f "${uenv_conf_file}" || -f "${rename_extlinux_file}" || -f "${armbianenv_conf_file}" ]] || error_msg "Missing [ /boot/*Env.txt ]"
