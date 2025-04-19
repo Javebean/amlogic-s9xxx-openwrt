@@ -677,6 +677,8 @@ make_image() {
         partition_table_type="msdos"
         bootfs_type="fat32"
     }
+    echo "yes,end_p2=$(((skip_mb + boot_mb + root_mb -1) * 2048 -1))" >root/.todo_rootfs_resize
+    echo "yes,end_p2=$(((skip_mb + boot_mb + root_mb -1) * 2048 -1))"
 
     # Set OpenWrt filename
     [[ -d "${out_path}" ]] || mkdir -p ${out_path}
@@ -1035,7 +1037,7 @@ EOF
     }
 
     # Automatic expansion of the third and fourth partitions
-    echo "yes" >root/.todo_rootfs_resize
+    # echo "yes" >root/.todo_rootfs_resize
 
     # Relink the kmod program
     [[ -x "sbin/kmod" ]] && (
@@ -1210,7 +1212,9 @@ find_openwrt
 # Download the dependency files
 download_depends
 # Query the latest kernel version
-[[ "${auto_kernel}" == "true" ]] && query_kernel
+# [[ "${auto_kernel}" == "true" ]] && query_kernel
+## fix bug
+query_kernel
 # Download the kernel files
 download_kernel
 

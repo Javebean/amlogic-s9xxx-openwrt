@@ -18,6 +18,7 @@
 #
 # Automatically expand file
 todo_rootfs_resize="/root/.todo_rootfs_resize"
+end_p2_index=$1
 #
 # Set font color
 STEPS="[\033[95m STEPS \033[0m]"
@@ -93,6 +94,13 @@ create_new_partition() {
     # Calculate partition positions
     echo -e "${INFO} Start calculating partition location..."
     END_P2="$(fdisk -l | grep "/dev/${DISK_NAME}" | sed -n '$p' | awk '{print $3}' | xargs)"
+
+    # 检查 END_P2 是否为空或非法（非纯数字），或小于 2652159
+    if [[ -z "${END_P2}" || -z "$(echo "${END_P2}" | sed -n '/^[0-9]\+$/p')" || "${END_P2}" -lt "${end_p2_index}" ]]; then
+        echo "[$(date +"%Y.%m.%d.%H:%M:%S")] error END_P2 value: ${END_P2}, fix value: ${end_p2_index}" >> /tmp/ophub_start_service.log
+        END_P2="${end_p2_index}"
+    fi
+
     [[ -z "${END_P2}" || -z "$(echo ${END_P2} | sed -n "/^[0-9]\+$/p")" ]] && error_msg "Unable to get starting position!"
     START_P3="$(((END_P2 + 1) / 2048 + 1))"
 
