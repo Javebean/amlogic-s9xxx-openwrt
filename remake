@@ -87,8 +87,8 @@ kernel_repo="https://github.com/ophub/kernel"
 default_tags="stable"
 kernel_usage=""
 # Set the list of kernels used by default(Selectable version)
-stable_kernel=("6.12.y")
-flippy_kernel=(${stable_kernel[@]})
+stable_kernel=("6.12.23")
+flippy_kernel=("6.12.22")
 dev_kernel=(${stable_kernel[@]})
 beta_kernel=(${stable_kernel[@]})
 rk3588_kernel=("5.10.y")
