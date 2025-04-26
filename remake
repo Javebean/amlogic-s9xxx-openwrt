@@ -678,7 +678,7 @@ make_image() {
         bootfs_type="fat32"
     }
     echo "yes,end_p2=$(((skip_mb + boot_mb + root_mb -1) * 2048 -1))" >root/.todo_rootfs_resize
-    echo "yes,end_p2=$(((skip_mb + boot_mb + root_mb -1) * 2048 -1))"
+    cat root/.todo_rootfs_resize
 
     # Set OpenWrt filename
     [[ -d "${out_path}" ]] || mkdir -p ${out_path}
@@ -1038,7 +1038,7 @@ EOF
 
     # Automatic expansion of the third and fourth partitions
     # echo "yes" >root/.todo_rootfs_resize
-
+    cat root/.todo_rootfs_resize
     # Relink the kmod program
     [[ -x "sbin/kmod" ]] && (
         kmod_list="depmod insmod lsmod modinfo modprobe rmmod"
