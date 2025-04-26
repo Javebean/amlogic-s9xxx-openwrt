@@ -113,6 +113,7 @@ uboot_meson_gxbb=("p201.bin" "s905.bin")
 make_board="all"
 
 # Set OpenWrt firmware size (Unit: MiB, boot_mb >= 256, root_mb >= 512)
+skip_mb="16"
 boot_mb="256"
 root_mb="1024"
 # Set OpenWrt builder signature
@@ -677,8 +678,6 @@ make_image() {
         partition_table_type="msdos"
         bootfs_type="fat32"
     }
-    echo "yes,end_p2=$(((skip_mb + boot_mb + root_mb -1) * 2048 -1))" >root/.todo_rootfs_resize
-    cat root/.todo_rootfs_resize
 
     # Set OpenWrt filename
     [[ -d "${out_path}" ]] || mkdir -p ${out_path}
@@ -1037,8 +1036,11 @@ EOF
     }
 
     # Automatic expansion of the third and fourth partitions
-    echo "yes11" >root/.todo_rootfs_resize
+    #echo "yes11" >root/.todo_rootfs_resize
+    #cat root/.todo_rootfs_resize
+    echo "yes,end_p2=$(((skip_mb + boot_mb + root_mb -1) * 2048 -1))" >root/.todo_rootfs_resize
     cat root/.todo_rootfs_resize
+
     # Relink the kmod program
     [[ -x "sbin/kmod" ]] && (
         kmod_list="depmod insmod lsmod modinfo modprobe rmmod"
