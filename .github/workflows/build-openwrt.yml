@@ -97,14 +97,14 @@ jobs:
     steps:
       - name: Select info
         run: |
-          echo ${{ inputs.source_branch }}
-          echo ${{ inputs.openwrt_board }}
-          echo ${{ inputs.openwrt_kernel }}
-          echo ${{ inputs.auto_kernel }}
-          echo ${{ inputs.kernel_repo }}
-          echo ${{ inputs.kernel_usage }}
-          echo ${{ inputs.openwrt_storage }}
-          echo ${{ inputs.builder_name }}
+          echo "编译源码：${{ inputs.source_branch }}"
+          echo "目标设备：${{ inputs.openwrt_board }}"
+          echo "内核版本：${{ inputs.openwrt_kernel }}"
+          echo "内核覆盖：${{ inputs.auto_kernel }}"
+          # echo "内核仓库：${{ inputs.kernel_repo }}"
+          echo "内核选择${{ inputs.kernel_usage }}"
+          # echo "${{ inputs.openwrt_storage }}"
+          echo "编译用户：${{ inputs.builder_name }}"
           
       - name: Checkout
         uses: actions/checkout@v4
