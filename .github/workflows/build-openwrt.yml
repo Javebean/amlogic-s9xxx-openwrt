@@ -96,6 +96,17 @@ jobs:
     if: ${{ github.event.repository.owner.id }} == ${{ github.event.sender.id }}
 
     steps:
+      - name: Select info
+        run: |
+          echo ${{ inputs.source_branch }}
+          echo ${{ inputs.openwrt_board }}
+          echo ${{ inputs.openwrt_kernel }}
+          echo ${{ inputs.auto_kernel }}
+          echo ${{ inputs.kernel_repo }}
+          echo ${{ inputs.kernel_usage }}
+          echo ${{ inputs.openwrt_storage }}
+          echo ${{ inputs.builder_name }}
+          
       - name: Checkout
         uses: actions/checkout@v4
 
