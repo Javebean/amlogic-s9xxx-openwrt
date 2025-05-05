@@ -3,8 +3,7 @@
 # Description: Build OpenWrt
 #============================================================================================
 
-name: Build OpenWrt[ ${{ inputs.source_branch }} ]
-
+name: Build OpenWrt
 on:
   repository_dispatch:
   workflow_dispatch:
