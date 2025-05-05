@@ -3,7 +3,7 @@
 # Description: Build OpenWrt
 #============================================================================================
 
-name: Build OpenWrt
+name: Build OpenWrt${{ inputs.source_branch }}${{ inputs.openwrt_board }}${{ inputs.source_branch }}${{ inputs.source_branch }}
 
 on:
   repository_dispatch:
