@@ -79,8 +79,9 @@ openvfd_boxid="15"
 
 # Automatic expansion of the third and fourth partitions
 todo_rootfs_resize="/root/.todo_rootfs_resize"
-[[ -f "${todo_rootfs_resize}" && "$(cat ${todo_rootfs_resize} 2>/dev/null | xargs)" == "yes" ]] && {
-    openwrt-tf 2>/dev/null &&
+[[ -f "${todo_rootfs_resize}" && "$(cat ${todo_rootfs_resize} 2>/dev/null | cut -d',' -f1)" == "yes" ]] && {
+    end_p2=$(cat ${todo_rootfs_resize} 2>/dev/null | cut -d',' -f2 | cut -d'=' -f2)
+    openwrt-tf "$end_p2" 2>/dev/null &&
         echo "[$(date +"%Y.%m.%d.%H:%M:%S")] Automatically expand the partition successfully." >>${custom_log}
 }
 
